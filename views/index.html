@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageFinder - Find Your Next Opportunity</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/public/style.css">
+    <link rel="stylesheet" href="./css/public/index.css">
+</head>
+
+<body>
+
+    <nav>
+        <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.png" alt="Logo">
+        </a>
+        <div class="nav-links">
+            <a href="./index.html">Home</a>
+            <a href="./public/search-offers.html">Search</a>
+            <a href="./public/offers-submiting.html">Track</a>
+        </div>
+
+    </nav>
+
+    <header class="hero">
+        <div class="hero-badge">
+            <i class="fa-solid fa-circle" style="font-size: 6px; margin-right: 5px;"></i>
+            Platform dedicated to web development students
+        </div>
+        <h1>Find Your Next<br>Opportunity</h1>
+        <p>Discover the best internship and work-study opportunities in web development, posted by companies
+            that are currently hiring.</p>
+
+        <div class="search-box">
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="search-title" type="text" placeholder="Job title">
+            </div>
+            <div class="search-divider"></div>
+            <div class="search-input">
+                <i class="fa-solid fa-location-dot"></i>
+                <select id="search-city">
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <button class="btn-primary" style="border-radius: 0.5rem; padding: 0.8rem 1.5rem;">Search</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <div>
+                <h2>Latest Offers</h2>
+            </div>
+        </div>
+
+        <div class="grid">
+
+        </div>
+        <div class="flex">
+            
+        </div>
+
+        <div class="load-more">
+            <button class="pagination-btn">Load more offers</button>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <div class="footer-top">
+
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="./assets/images/logo_dark_mode.png" alt="logo">
+                    </div>
+                    <p>The leading platform for internship and work-study opportunities.</p>
+                </div>
+
+                <div class="footer-links-wrapper">
+
+                    <div class="footer-link-group">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Offers</a></li>
+                            <li><a href="#">Companies</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-link-group">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Legal Notice</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 Stage Portal — All rights reserved</p>
+                <p>Internship & Work-study · France</p>
+            </div>
+
+        </div>
+    </footer>
+    <script type="module"  src="./js/app.js"></script>
+</body>
+
+</html>
