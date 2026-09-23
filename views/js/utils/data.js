@@ -1,6 +1,6 @@
 export async function getData() {
     try {
-        const response = await fetch("/data/offers.json");
+        const response = await fetch("/views/data/offers.json");
         const data = await response.json()
         return data;
     } catch (error) {
