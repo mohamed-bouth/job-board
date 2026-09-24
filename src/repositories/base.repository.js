@@ -2,9 +2,10 @@ import db from '../config/db.js'
 import { queryKeysValuesHelper } from '../utils/queryKeysValuesHelper.js'
 
 export class Base {
-    constructor(table, column) {
+    constructor(table, column, relations) {
         this.table = table;
-        this.column = column
+        this.column = column;
+        this.relations = relations;
     }
 
     async findAll() {
@@ -17,7 +18,7 @@ export class Base {
     }
     async findById(id) {
         if (!Number.isInteger(id) || 0 >= id) {
-            throw new Error('Invalid Id') 
+            throw new Error('Invalid Id')
         }
         try {
             const [[row]] = await db.query(`select * FROM ${this.table} WHERE id = ?`, id)
@@ -71,7 +72,7 @@ export class Base {
 
         bodyValues.push(id)
         try {
-            await db.query(query,bodyValues);
+            await db.query(query, bodyValues);
             return {
                 success: true
             }
@@ -86,12 +87,66 @@ export class Base {
         const query = `DELETE FROM ${this.table}
                     WHERE id = ?;`
         try {
-            await db.query(query,id)
+            await db.query(query, id)
             return {
                 seccess: true
             }
         } catch (error) {
             throw error
         }
+    }
+
+    async with(selectedTable) {
+        if (!this.relations.includes(selectedTable)) {
+            throw new Error(`there no relation between ${this.table} and ${selectedTable}`)
+        }
+
+        const query =
+            `SELECT
+    ${this.table}.*,
+    ${selectedTable}.id AS ${selectedTable}_id,
+    ${selectedTable}.name AS ${selectedTable}_name
+    FROM ${this.table}
+    JOIN ${this.table}_${selectedTable}
+    ON ${this.table}.id = ${this.table}_${selectedTable}.${this.table}_id
+    JOIN ${selectedTable}
+    ON ${this.table}_${selectedTable}.${selectedTable}_id = ${selectedTable}.id
+    ORDER BY ${this.table}.id ASC;`
+
+        const [offers] = await db.query(query)
+        const allOffers = offers.reduce((acc, offer) => {
+
+            const existingOffer = acc.find(item => item.id === offer.id);
+
+            if (existingOffer) {
+                existingOffer.technologies.push({
+                    id: offer.technology_id,
+                    name: offer.technology_name
+                });
+            } else {
+                acc.push({
+                    id: offer.id,
+                    title: offer.title,
+                    description: offer.description,
+                    city: offer.city,
+                    contract_type: offer.contract_type,
+                    publication_date: offer.publication_date,
+                    company_id: offer.company_id,
+                    technologies: [
+                        {
+                            id: offer.technology_id,
+                            name: offer.technology_name
+                        }
+                    ]
+                });
+            }
+
+            return acc;
+
+        }, []);
+
+
+        return allOffers
+
     }
 }
