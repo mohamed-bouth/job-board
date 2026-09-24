@@ -7,7 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:create": "sudo mysql -e \"CREATE DATABASE IF NOT EXISTS job_board;\" && sudo mysql job_board < database/schema.sql",
+    "db:drop": "sudo mysql -e \"DROP DATABASE IF EXISTS job_board;\"",
+    "db:seed": "node database/seed.js",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -18,7 +20,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/mohamed-bouth/job-board/issues"
   },

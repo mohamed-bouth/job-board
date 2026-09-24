@@ -8,7 +8,7 @@ async function seedCompanyTable(db, companies) {
     const companiesText = queryKeysValuesHelper(companies)
     const query = `
         INSERT INTO company ${companiesText.keys}
-        VALUES ${companiesText.values.slice(0, -1)};
+        VALUES ${companiesText.values};
     `;
     try {
         await db.query(query)
@@ -23,7 +23,7 @@ async function seedTechnologyTable(db, technologies) {
 
     const query = `
         INSERT INTO technology ${technologiesText.keys}
-        VALUES ${technologiesText.values.slice(0, -1)};
+        VALUES ${technologiesText.values};
     `;
 
     await db.query(query);
@@ -36,12 +36,16 @@ async function seedOfferTable(db, offers) {
 
     const query = `
         INSERT INTO offer ${offersText.keys}
-        VALUES ${offersText.values.slice(0, -1)};
+        VALUES ${offersText.values};
     `;
 
     await db.query(query);
 
     console.log("Offers inserted successfully!");
+}
+
+async function getOffersTechnologiesIds(){
+    
 }
 
 await seedCompanyTable(db, companies)

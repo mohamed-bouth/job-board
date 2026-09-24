@@ -14,6 +14,6 @@ export function queryKeysValuesHelper(data) {
 
     return {
         keys : dataKeysToText,
-        values : dataValuesToText
+        values : dataValuesToText.slice(0, -1)
     }
 }
