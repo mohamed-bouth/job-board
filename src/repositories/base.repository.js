@@ -12,28 +12,31 @@ export class Base {
             const [rows] = await db.query(`SELECT * FROM ${this.table}`)
             return rows
         } catch (error) {
-            return error
+            throw error
         }
     }
     async findById(id) {
         if (!Number.isInteger(id) || 0 >= id) {
-            return []
+            throw new Error('Invalid Id') 
         }
         try {
             const [[row]] = await db.query(`select * FROM ${this.table} WHERE id = ?`, id)
             return row
         } catch (error) {
-            return error
+            throw error
         }
     }
     async create(requestBody) {
         const bodyKeys = Object.keys(requestBody)
         const bodyValues = Object.values(requestBody)
-        const placeholders = bodyKeys.map(() => '(?)').join(', ');
+        let placeholders = '('
+        placeholders += bodyKeys.map(() => '?').join(', ');
+        placeholders += ')'
+        console.log(placeholders)
 
         const same = this.column.length === bodyKeys.length && this.column.every(key => bodyKeys.includes(key));
         if (!same) {
-            return [{ error: "check your body" }]
+            throw new Error('Invalid body')
         }
         try {
             const requestToText = queryKeysValuesHelper([requestBody])
@@ -45,21 +48,18 @@ export class Base {
                 success: true
             }
         } catch (error) {
-            return {
-                success: false,
-                error
-            }
+            throw error
         }
     }
     async update(id, requestBody) {
         if (!Number.isInteger(id) || 0 >= id) {
-            return []
+            throw new Error('invalid Id')
         }
         const bodyKeys = Object.keys(requestBody)
         const bodyValues = Object.values(requestBody)
         const same = bodyKeys.every(key => this.column.includes(key));
         if (!same) {
-            return [{ error: "check your body" }]
+            throw new Error('invalid body')
         }
         const keysValues = Object.entries(requestBody)
         let query = `UPDATE ${this.table} SET `
@@ -76,15 +76,12 @@ export class Base {
                 success: true
             }
         } catch (error) {
-            return {
-                success: false,
-                error
-            }
+            throw error
         }
     }
     async delete(id) {
         if (!Number.isInteger(id) || 0 >= id) {
-            return []
+            throw new Error('invalid id')
         }
         const query = `DELETE FROM ${this.table}
                     WHERE id = ?;`
@@ -94,10 +91,7 @@ export class Base {
                 seccess: true
             }
         } catch (error) {
-            return {
-                success: false,
-                error
-            }
+            throw error
         }
     }
 }
