@@ -10,8 +10,8 @@
     "db:create": "sudo mysql -e \"CREATE DATABASE IF NOT EXISTS job_board;\" && sudo mysql job_board < database/schema.sql",
     "db:drop": "sudo mysql -e \"DROP DATABASE IF EXISTS job_board;\"",
     "db:seed": "node database/seed.js",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "nodemon src/config/server.js",
+    "start": "node src/config/server.js"
   },
   "repository": {
     "type": "git",
