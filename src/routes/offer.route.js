@@ -1,12 +1,12 @@
 import express from 'express'
-import { getAllOffers } from '../controllers/offer.controller.js'
+import { getAllOffers , getOfferById , storeOffer , updateOffer , deleteOffer} from '../controllers/offer.controller.js'
 
 const router = express.Router()
 
 router.get('/', getAllOffers)
-// router.get('/:id')
-// router.post('/')
-// router.put('/:id')
-// router.delete('/:id')
+router.get('/:id', getOfferById)
+router.post('/', storeOffer )
+router.put('/:id', updateOffer)
+router.delete('/:id', deleteOffer)
 
 export default router

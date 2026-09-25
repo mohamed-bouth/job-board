@@ -33,7 +33,6 @@ export class Base {
         let placeholders = '('
         placeholders += bodyKeys.map(() => '?').join(', ');
         placeholders += ')'
-        console.log(placeholders)
 
         const same = this.column.length === bodyKeys.length && this.column.every(key => bodyKeys.includes(key));
         if (!same) {
@@ -96,12 +95,12 @@ export class Base {
         }
     }
 
-    async with(selectedTable) {
+    async with(selectedTable, id = null) {
         if (!this.relations.includes(selectedTable)) {
             throw new Error(`there no relation between ${this.table} and ${selectedTable}`)
         }
 
-        const query =
+        let query =
             `SELECT
     ${this.table}.*,
     ${selectedTable}.id AS ${selectedTable}_id,
@@ -110,8 +109,13 @@ export class Base {
     JOIN ${this.table}_${selectedTable}
     ON ${this.table}.id = ${this.table}_${selectedTable}.${this.table}_id
     JOIN ${selectedTable}
-    ON ${this.table}_${selectedTable}.${selectedTable}_id = ${selectedTable}.id
-    ORDER BY ${this.table}.id ASC;`
+    ON ${this.table}_${selectedTable}.${selectedTable}_id = ${selectedTable}.id `
+
+    if(id !== null){
+        query += `WHERE ${this.table}.id = ${id} `
+    }
+
+    query += `ORDER BY ${this.table}.id ASC;`
 
         const [offers] = await db.query(query)
         const allOffers = offers.reduce((acc, offer) => {
