@@ -1,4 +1,5 @@
 import { getAllOffersService, getOfferByIdService, storeOfferService, updateOfferService, deleteOfferService } from "../services/offer.service.js";
+import { storeOfferSchema, updateOfferSchema } from "../validations/offer.validation.js"
 
 export async function getAllOffers(req, res) {
     try {
@@ -38,6 +39,16 @@ export async function getOfferById(req, res) {
 
 export async function storeOffer(req, res) {
     try {
+
+        const valide = storeOfferSchema.safeParse(req.body)
+        
+        if(!valide.success){
+            return res.status(400).json({
+                success: false,
+                error : valide.error.issues
+            })
+        }
+
         console.log(req.body)
         const result = await storeOfferService(req.body)
 

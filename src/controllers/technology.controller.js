@@ -1,10 +1,5 @@
-import {
-	getAllTechnologiesService,
-	getTechnologyByIdService,
-	storeTechnologyService,
-	updateTechnologyService,
-	deleteTechnologyService
-} from "../services/technology.service.js";
+import { getAllTechnologiesService, getTechnologyByIdService, storeTechnologyService, updateTechnologyService, deleteTechnologyService } from "../services/technology.service.js";
+import { technologySchema } from "../validations/technology.validation.js"
 
 export async function getAllTechnologies(req, res) {
 	try {
@@ -40,6 +35,16 @@ export async function getTechnologyById(req, res) {
 
 export async function storeTechnology(req, res) {
 	try {
+
+		const valide = technologySchema.safeParse(req.body)
+
+		if(!valide.success){
+			return res.status(400).json({
+				success: false,
+				error : valide.error.issues
+			})
+		}
+
 		const result = await storeTechnologyService(req.body)
 
 		return res.status(201).json({

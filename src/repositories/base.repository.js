@@ -67,7 +67,7 @@ export class Base {
             query += `${column[0]} = ? ,`
         })
         query = query.slice(0, -1)
-        query += `WHERE id = ?`
+        query += `WHERE id = ? ;`
 
         bodyValues.push(id)
         try {
@@ -104,12 +104,15 @@ export class Base {
             `SELECT
     ${this.table}.*,
     ${selectedTable}.id AS ${selectedTable}_id,
-    ${selectedTable}.name AS ${selectedTable}_name
+    ${selectedTable}.name AS ${selectedTable}_name,
+    company.name AS company_name
     FROM ${this.table}
     JOIN ${this.table}_${selectedTable}
     ON ${this.table}.id = ${this.table}_${selectedTable}.${this.table}_id
     JOIN ${selectedTable}
-    ON ${this.table}_${selectedTable}.${selectedTable}_id = ${selectedTable}.id `
+    ON ${this.table}_${selectedTable}.${selectedTable}_id = ${selectedTable}.id
+    JOIN company
+    on company.id = ${this.table}.company_id `
 
     if(id !== null){
         query += `WHERE ${this.table}.id = ${id} `
@@ -123,10 +126,9 @@ export class Base {
             const existingOffer = acc.find(item => item.id === offer.id);
 
             if (existingOffer) {
-                existingOffer.technologies.push({
-                    id: offer.technology_id,
-                    name: offer.technology_name
-                });
+                existingOffer.technologies.push(
+                    offer.technology_name
+                );
             } else {
                 acc.push({
                     id: offer.id,
@@ -136,11 +138,9 @@ export class Base {
                     contract_type: offer.contract_type,
                     publication_date: offer.publication_date,
                     company_id: offer.company_id,
+                    company: offer.company_name,
                     technologies: [
-                        {
-                            id: offer.technology_id,
-                            name: offer.technology_name
-                        }
+                            offer.technology_name
                     ]
                 });
             }

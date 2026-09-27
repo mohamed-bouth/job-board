@@ -1,10 +1,5 @@
-import {
-	getAllCompaniesService,
-	getCompanyByIdService,
-	storeCompanyService,
-	updateCompanyService,
-	deleteCompanyService
-} from "../services/company.service.js";
+import { getAllCompaniesService, getCompanyByIdService, storeCompanyService, updateCompanyService, deleteCompanyService } from "../services/company.service.js";
+import { companySchema } from "../validations/company.validation.js"
 
 export async function getAllCompanies(req, res) {
 	try {
@@ -40,6 +35,16 @@ export async function getCompanyById(req, res) {
 
 export async function storeCompany(req, res) {
 	try {
+
+		const valide = companySchema.safeParse(req.body)
+
+		if(!valide.success){
+			return res.status(400).json({
+				success: false,
+				error : valide.error.issues
+			})
+		}
+
 		const result = await storeCompanyService(req.body)
 
 		return res.status(201).json({
@@ -56,6 +61,16 @@ export async function storeCompany(req, res) {
 
 export async function updateCompany(req, res) {
 	try {
+
+		const valide = companySchema.safeParse(req.body)
+
+		if(!valide.success){
+			return res.status(400).json({
+				success: false,
+				error : valide.error.issues
+			})
+		}
+
 		const result = await updateCompanyService(req.params.id, req.body)
 
 		return res.status(204).json({
