@@ -243,3 +243,9 @@
         padding: 1.2rem;
     }
 }
+
+.applications-grid .fa-heart,
+.applications-grid .favorite-btn,
+.applications-grid .heart-icon {
+    display: none !important;
+}

@@ -118,7 +118,7 @@ function CardCreator(offer) {
     // Contract Badge
     const contractBadge = document.createElement('span')
     contractBadge.classList.add('badge', 'badge-stage')
-    contractBadge.textContent = offer.contractType
+    contractBadge.textContent = offer.contract_type
 
     // Location
     const location = document.createElement('span')
