@@ -1,5 +1,5 @@
 import { getData } from "./utils/data.js";
-import { getFavorites, toggleFavorite, getApplications, saveApplication } from "./utils/storage.js";
+import { getFavorites, toggleFavorite, getApplications, saveApplication, removeApplication } from "./utils/storage.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const offerId = urlParams.get('id');
@@ -18,7 +18,7 @@ if (!offer) {
 }
 
 function renderOfferDetails(offer) {
-       
+        
     const companyName = document.querySelector('.company-details h3');
     if (companyName) companyName.textContent = offer.company;
 
@@ -56,7 +56,7 @@ function renderOfferDetails(offer) {
     
     const summaryValues = document.querySelectorAll('.summary-value');
     if (summaryValues.length >= 4) {
-        summaryValues[0].textContent = offer.contractType;
+        summaryValues[0].textContent = offer.contract_type;
         summaryValues[1].textContent = offer.city;
         summaryValues[2].textContent = "6 months";
         summaryValues[3].textContent = offer.company;
@@ -73,21 +73,31 @@ function renderOfferDetails(offer) {
         });
     }
 
-       
+        
     const applyBtn = document.querySelector('.apply-card .btn-primary');
     if (applyBtn) {
         updateApplyButtonState(applyBtn, offer.id);
 
         applyBtn.addEventListener('click', () => {
-            saveApplication(offer.id);
-            updateApplyButtonState(applyBtn, offer.id);
+            const apps = getApplications().map(item => String(item));
+            const isApplied = apps.includes(String(offer.id));
 
-                 
-            if (offer.applyUrl) {
-                window.open(offer.applyUrl, '_blank');
-            } else if (offer.email) {
-                window.location.href = `mailto:${offer.email}`;
+            if (isApplied) {
+                
+                removeApplication(offer.id);
+            } else {
+                
+                saveApplication(offer.id);
+
+                if (offer.applyUrl) {
+                    window.open(offer.applyUrl, '_blank');
+                } else if (offer.email) {
+                    window.location.href = `mailto:${offer.email}`;
+                }
             }
+
+            
+            updateApplyButtonState(applyBtn, offer.id);
         });
     }
 }
@@ -112,5 +122,8 @@ function updateApplyButtonState(button, id) {
     if (isApplied) {
         button.innerHTML = `Applied <i class="fa-solid fa-check"></i>`;
         button.style.backgroundColor = "#10B981";
+    } else {
+        button.innerHTML = `Apply <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem;"></i>`;
+        button.style.backgroundColor = ""; 
     }
 }

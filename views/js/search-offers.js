@@ -53,7 +53,7 @@ function filterOffers(offers) {
         newOffers = newOffers.filter(offer => offer.city === city)
     }
     if (contractType !== "all") {
-        newOffers = newOffers.filter(offer => offer.contractType === contractType)
+        newOffers = newOffers.filter(offer => offer.contract_type === contractType)
     }
     if (technologiesChoosen.length > 0) {
         newOffers = newOffers.filter(offer => {

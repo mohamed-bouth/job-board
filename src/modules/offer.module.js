@@ -13,6 +13,9 @@ export class Offer extends Base{
                 'application_link',
                 'publication_date',
                 'company_id'
+            ],
+            [
+                'technology'
             ]
         )
     }
