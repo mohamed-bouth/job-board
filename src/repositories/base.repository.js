@@ -133,10 +133,13 @@ export class Base {
                 acc.push({
                     id: offer.id,
                     title: offer.title,
-                    description: offer.description,
+                    longDescription: offer.long_description,
+                    shortDescription : offer.short_description,
                     city: offer.city,
                     contract_type: offer.contract_type,
                     publication_date: offer.publication_date,
+                    contact_email : offer.contact_email,
+                    application_link : offer.application_link,
                     company_id: offer.company_id,
                     company: offer.company_name,
                     technologies: [

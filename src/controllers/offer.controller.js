@@ -1,15 +1,19 @@
 import { getAllOffersService, getOfferByIdService, storeOfferService, updateOfferService, deleteOfferService } from "../services/offer.service.js";
 import { storeOfferSchema, updateOfferSchema } from "../validations/offer.validation.js"
+import { response , errorResponse } from "../utils/response.js";
+import { getAllTechnologiesService } from "../services/technology.service.js";
 
 export async function getAllOffers(req, res) {
     try {
 
         const result = await getAllOffersService()
 
-        return res.status(200).json({
-            success: true,
-            data: result
-        })
+        // return res.status(200).json({
+        //     success: true,
+        //     data: result
+        // })
+
+        response(req , res , {offers : result} , "offers/index")
 
     } catch (error) {
         return res.status(500).json({
@@ -22,12 +26,18 @@ export async function getAllOffers(req, res) {
 export async function getOfferById(req, res) {
     try {
 
-        const result = await getOfferByIdService(req.params.id)
+        const offers = await getOfferByIdService(req.params.id)
+        const technologies = await getAllTechnologiesService()
 
-        return res.status(200).json({
-            success: true,
-            data: result
-        })
+        // return res.status(200).json({
+        //     success: true,
+        //     data: result
+        // })
+
+        const offer = offers[0]
+        console.log(offer)
+
+        response(req , res , {offer , technologies} , "offers/edit")
 
     } catch (error) {
         return res.status(500).json({

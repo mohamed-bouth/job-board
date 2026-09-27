@@ -1,0 +1,83 @@
+<%- include('../partials/head.ejs') %>
+
+<body>
+
+    <div class="dashboard-container">
+        <%- include('../partials/sidebar.ejs') %>
+
+        <main class="main-content">
+            
+            <div class="page-header">
+                <div>
+                    <h1>Offer Management</h1>
+                    <p>Manage all internship and work-study offers published on the platform.</p>
+                </div>
+                <a href="./create.html" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i> Add an Offer
+                </a>
+            </div>
+
+            <div class="filters-bar">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="input-control" placeholder="Search for an offer...">
+                </div>
+                <select class="select-control">
+                    <option>All cities</option>
+                </select>
+                <select class="select-control">
+                    <option>All contracts</option>
+                </select>
+                <select class="select-control">
+                    <option>All technologies</option>
+                </select>
+                <span class="results-count">8 offers</span>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Company</th>
+                            <th>City</th>
+                            <th>Contract</th>
+                            <th>Technologies</th>
+                            <th>Published On</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%offers.forEach(offer => { %>
+                        <tr>
+                            <td class="job-title"><%= offer.title %></td>
+                            <td class="text-gray"><%= offer.company %></td>
+                            <td class="text-gray"><%= offer.city %></td>
+                            <td><span class="badge badge-stage"><%= offer.contract_type %></span></td>
+                            <td>
+                                <div class="tech-list">
+                                    <% offer.technologies.forEach(technology => { %>
+                                        <span class="tech-tag"><%= technology %></span>
+                                    <% }); %>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="actions-cell">
+                                    <form action="/api/offers/<%= offer.id %>" method="get">
+                                        <button class="btn-action"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                                    </form>
+                                    <button class="btn-action btn-delete"><i class="fa-regular fa-trash-can"></i> Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
