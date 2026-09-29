@@ -1,0 +1,195 @@
+<!-- filepath: /home/lhandouz/Projects/job-board/views/admin/offers/create.ejs -->
+<%- include('../partials/head.ejs') %>
+
+<body>
+    <div class="dashboard-container">
+        <%- include('../partials/sidebar.ejs') %>
+
+        <main class="main-content">
+            <div class="page-header-create">
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <div class="header-text">
+                    <h1>Add an offer</h1>
+                    <p>Fill out the form below to publish a new offer.</p>
+                </div>
+            </div>
+
+            <form method="POST" action="/api/offers">
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h2>General Information</h2>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Job title *</label>
+                            <input
+                                type="text"
+                                name="title"
+                                class="form-control"
+                                placeholder="e.g., React Frontend Developer"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Company ID *</label>
+                            <select name="company_id" class="form-control">
+                                <% companies.forEach(company => { %>
+                                    <option value="<%= company.id %>"><%= company.name %></option>
+                                 <% }); %>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">City *</label>
+                            <input
+                                type="text"
+                                name="city"
+                                class="form-control"
+                                placeholder="e.g., Paris"
+                                required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h2>Contract Type</h2>
+                    </div>
+
+                    <div class="radio-grid">
+                        <label class="radio-card">
+                            <input
+                                type="radio"
+                                name="contract_type"
+                                value="internship"
+                                checked
+                                required
+                            >
+                            <div class="radio-content">
+                                <span class="radio-title">Internship</span>
+                                <span class="radio-desc">1-6 months</span>
+                            </div>
+                        </label>
+
+                        <label class="radio-card">
+                            <input
+                                type="radio"
+                                name="contract_type"
+                                value="apprenticeship"
+                            >
+                            <div class="radio-content">
+                                <span class="radio-title">Apprenticeship</span>
+                                <span class="radio-desc">12-24 months</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h2>Technologies</h2>
+                    </div>
+
+                    <div class="tech-grid">
+                        <% technologies.forEach((technology) => { %>
+                            <label class="tech-chip">
+                                <input
+                                    type="checkbox"
+                                    name="technology_ids"
+                                    value="<%= technology.id %>"
+                                >
+                                <%= technology.name %>
+                            </label>
+                        <% }) %>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h2>Job Description</h2>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">Short description *</label>
+                            <textarea
+                                name="short_description"
+                                class="form-control"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">Full mission description *</label>
+                            <textarea
+                                name="long_description"
+                                class="form-control"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h2>Contact & Publication</h2>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Contact email</label>
+                            <input
+                                type="email"
+                                name="contact_email"
+                                class="form-control"
+                                placeholder="hr@company.com"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Application link</label>
+                            <input
+                                type="url"
+                                name="application_link"
+                                class="form-control"
+                                placeholder="https://..."
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Publication date *</label>
+                            <input
+                                type="date"
+                                name="publication_date"
+                                class="form-control"
+                                required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions-bar">
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        onclick="history.back()"
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Create offer
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -43,9 +43,9 @@ export class Base {
             const query = `
                             INSERT INTO ${this.table} ${requestToText.keys}
                             VALUES ${placeholders};`;
-            await db.query(query, bodyValues)
+            const result = await db.query(query, bodyValues)
             return {
-                success: true
+                id : result[0].insertId
             }
         } catch (error) {
             throw error

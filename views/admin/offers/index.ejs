@@ -12,7 +12,7 @@
                     <h1>Offer Management</h1>
                     <p>Manage all internship and work-study offers published on the platform.</p>
                 </div>
-                <a href="./create.html" class="btn btn-primary">
+                <a href="/api/offers/create" class="btn btn-primary">
                     <i class="fa-solid fa-plus"></i> Add an Offer
                 </a>
             </div>
@@ -66,7 +66,7 @@
                                     <form action="/api/offers/<%= offer.id %>" method="get">
                                         <button class="btn-action"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
                                     </form>
-                                    <button class="btn-action btn-delete"><i class="fa-regular fa-trash-can"></i> Delete</button>
+                                    <button data-id="<%= offer.id %>" class="btn-action btn-delete deleteBtn"><i class="fa-regular fa-trash-can"></i> Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -78,6 +78,26 @@
 
         </main>
     </div>
+    <script>
+        const deleteBtns = document.querySelectorAll(".deleteBtn")
 
+        deleteBtns.forEach(btn => {
+            btn.addEventListener("click", async () => {
+                try {
+                    const response = await fetch(`/api/offers/${btn.dataset.id}`, {
+                        method: "DELETE"
+                    });
+                    if(!response.ok){
+                        throw new Error("Delete failed");
+                    }
+                    window.location.reload();
+                }catch(error){
+                    console.error(error)
+                }
+
+            })
+        })
+
+    </script>
 </body>
 </html>
