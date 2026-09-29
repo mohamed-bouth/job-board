@@ -1,4 +1,4 @@
-import { z } from "zod";
+import z from "zod";
 
 export const storeOfferSchema = z.object({
     title: z.string().min(10),
@@ -9,7 +9,6 @@ export const storeOfferSchema = z.object({
     contact_email: z.email().optional(),
     application_link: z.string().optional(),
     publication_date: z.coerce.date(),
-    company_id: z.number().int().positive()
 })
 
 export const updateOfferSchema = z.object({

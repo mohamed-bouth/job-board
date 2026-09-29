@@ -1,67 +1,67 @@
-import { getAllOffersService, getOfferByIdService, storeOfferService, updateOfferService, deleteOfferService } from "../services/offer.service.js";
+import { getAllOffersService, getOfferByIdService, createOfferService, storeOfferService, updateOfferService, deleteOfferService } from "../services/offer.service.js";
 import { storeOfferSchema, updateOfferSchema } from "../validations/offer.validation.js"
+import { response, errorResponse } from "../utils/response.js";
+import { getAllTechnologiesService } from "../services/technology.service.js";
 
 export async function getAllOffers(req, res) {
     try {
 
         const result = await getAllOffersService()
 
-        return res.status(200).json({
-            success: true,
-            data: result
-        })
+        response(req, res, { offers: result }, "offers/index")
 
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            error
-        })
+        errorResponse(req, res , error, 500)
     }
 }
 
 export async function getOfferById(req, res) {
     try {
 
-        const result = await getOfferByIdService(req.params.id)
+        const offers = await getOfferByIdService(req.params.id)
+        const technologies = await getAllTechnologiesService()
 
-        return res.status(200).json({
-            success: true,
-            data: result
-        })
+        const offer = offers[0]
+
+        response(req, res, { offer, technologies }, "offers/edit")
 
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            error
-        })
+        errorResponse(req, res , error, 500)
+    }
+}
+
+export async function createOffer(req, res) {
+    try {
+        const { technologies, companies } = await createOfferService()
+
+        response(req, res, { technologies, companies }, "offers/create")
+    } catch (error) {
+        errorResponse(req, res, error, 500)
     }
 }
 
 export async function storeOffer(req, res) {
-    try {
 
-        const valide = storeOfferSchema.safeParse(req.body)
-        
-        if(!valide.success){
-            return res.status(400).json({
-                success: false,
-                error : valide.error.issues
-            })
-        }
+    const valide = storeOfferSchema.safeParse(req.body)
+    console.log(valide)
 
-        console.log(req.body)
-        const result = await storeOfferService(req.body)
-
-        return res.status(201).json({
-            success: true,
-            data: result
-        })
-
-    } catch (error) {
+    if (!valide.success) {
         return res.status(400).json({
             success: false,
-            error
+            error: valide.error.issues
         })
+    }
+    try {
+
+        await storeOfferService(req.body)
+        const result = await getAllOffersService()
+
+        response(req, res, { offers: result }, "offers/index")
+
+        
+
+    } catch (error) {
+        errorResponse(req, res , error, 500)
     }
 }
 
@@ -86,17 +86,11 @@ export async function updateOffer(req, res) {
 export async function deleteOffer(req, res) {
     try {
 
-        const result = await deleteOfferService(req.params.id)
+        const offers = await deleteOfferService(req.params.id)
 
-        return res.status(204).json({
-            success: true,
-            data: result
-        })
+        response(req, res, { offers }, "offers/index")
 
     } catch (error) {
-        return res.status(400).json({
-            success: false,
-            error
-        })
+        errorResponse(req, res , error, 500)
     }
 }
